@@ -18,3 +18,13 @@ jobs:
           TOKEN: ${{secrets.GITHUB_TOKEN}}
           PR_NUMBER: ${{github.event.pull_request.number}}
           REPO: ${{github.repository}}
+      - name: Save PR number
+        if: steps.pr-validation.outcome == 'success'
+        run: |
+          mkdir -p ./pr
+          echo ${{ github.event.number }} > ./pr/NR
+      - uses: actions/upload-artifact@v2
+        if: steps.pr-validation.outcome == 'success'
+        with:
+          name: pr
+          path: pr/
