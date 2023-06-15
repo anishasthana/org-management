@@ -18,17 +18,3 @@ jobs:
           TOKEN: ${{secrets.GITHUB_TOKEN}}
           PR_NUMBER: ${{github.event.pull_request.number}}
           REPO: ${{github.repository}}
-
-      - name: Merge PR if validation succeeded
-        if: steps.pr-validation.outcome == 'success'
-        uses: actions/github-script@v4
-        with:
-          script: |
-            const response = await github.pulls.merge({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number
-            });
-            console.log(response.data);
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
